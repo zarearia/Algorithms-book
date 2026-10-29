@@ -6,11 +6,31 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		F76922C33093230C0071B293 /* AriasTools.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7A6A2A9309082BD0072BC92 /* AriasTools.framework */; platformFilter = ios; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		F76922C43093230C0071B293 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F7A6A2A0309082BC0072BC92 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F7A6A2A8309082BD0072BC92;
+			remoteInfo = AriasTools;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		F76922BF3093230C0071B293 /* AriasToolsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AriasToolsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7A6A2A9309082BD0072BC92 /* AriasTools.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = AriasTools.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		F76922C03093230C0071B293 /* AriasToolsTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = AriasToolsTests;
+			sourceTree = "<group>";
+		};
 		F7A6A2AB309082BD0072BC92 /* AriasTools */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = AriasTools;
@@ -19,6 +39,14 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		F76922BC3093230C0071B293 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F76922C33093230C0071B293 /* AriasTools.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F7A6A2A6309082BD0072BC92 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -33,6 +61,7 @@
 			isa = PBXGroup;
 			children = (
 				F7A6A2AB309082BD0072BC92 /* AriasTools */,
+				F76922C03093230C0071B293 /* AriasToolsTests */,
 				F7A6A2AA309082BD0072BC92 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -41,6 +70,7 @@
 			isa = PBXGroup;
 			children = (
 				F7A6A2A9309082BD0072BC92 /* AriasTools.framework */,
+				F76922BF3093230C0071B293 /* AriasToolsTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -58,6 +88,29 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		F76922BE3093230C0071B293 /* AriasToolsTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = F76922C63093230C0071B293 /* Build configuration list for PBXNativeTarget "AriasToolsTests" */;
+			buildPhases = (
+				F76922BB3093230C0071B293 /* Sources */,
+				F76922BC3093230C0071B293 /* Frameworks */,
+				F76922BD3093230C0071B293 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				F76922C53093230C0071B293 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				F76922C03093230C0071B293 /* AriasToolsTests */,
+			);
+			name = AriasToolsTests;
+			packageProductDependencies = (
+			);
+			productName = AriasToolsTests;
+			productReference = F76922BF3093230C0071B293 /* AriasToolsTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		F7A6A2A8309082BD0072BC92 /* AriasTools */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = F7A6A2B2309082BD0072BC92 /* Build configuration list for PBXNativeTarget "AriasTools" */;
@@ -91,6 +144,9 @@
 				LastSwiftUpdateCheck = 2650;
 				LastUpgradeCheck = 2650;
 				TargetAttributes = {
+					F76922BE3093230C0071B293 = {
+						CreatedOnToolsVersion = 26.5;
+					};
 					F7A6A2A8309082BD0072BC92 = {
 						CreatedOnToolsVersion = 26.5;
 					};
@@ -111,11 +167,19 @@
 			projectRoot = "";
 			targets = (
 				F7A6A2A8309082BD0072BC92 /* AriasTools */,
+				F76922BE3093230C0071B293 /* AriasToolsTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		F76922BD3093230C0071B293 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F7A6A2A7309082BD0072BC92 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -126,6 +190,13 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		F76922BB3093230C0071B293 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		F7A6A2A5309082BD0072BC92 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -135,7 +206,59 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		F76922C53093230C0071B293 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			platformFilter = ios;
+			target = F7A6A2A8309082BD0072BC92 /* AriasTools */;
+			targetProxy = F76922C43093230C0071B293 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		F76922C73093230C0071B293 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GG7GN7L79A;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ariazare.AriasToolsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		F76922C83093230C0071B293 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GG7GN7L79A;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.ariazare.AriasToolsTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 		F7A6A2B0309082BD0072BC92 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -351,6 +474,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		F76922C63093230C0071B293 /* Build configuration list for PBXNativeTarget "AriasToolsTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				F76922C73093230C0071B293 /* Debug */,
+				F76922C83093230C0071B293 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		F7A6A2A3309082BC0072BC92 /* Build configuration list for PBXProject "AriasTools" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
