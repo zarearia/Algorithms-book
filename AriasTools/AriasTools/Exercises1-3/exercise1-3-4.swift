@@ -7,9 +7,11 @@
 
 func parantheses(input: String) -> Bool {
     let stack = FixedCapacityStack<String>(size: input.count, defaultValue: "")
+    var string = input
     for i in input {
+        let value = String(string.removeFirst())
         if i == "[" || i == "(" || i == "{" {
-            stack.push(String(input.dropFirst()))
+            stack.push(value)
             continue
         }
         
