@@ -7,6 +7,7 @@
 
 import Testing
 @testable import AriasTools
+import XCTest
 
 struct AriasToolsTests {
 
@@ -27,6 +28,53 @@ struct AriasToolsTests {
 
     }
     
-    @Test func one() async throws {
+    @Test func one_three_four() {
+        XCTAssertTrue(parantheses(input: ""))
+        XCTAssertTrue(parantheses(input: ""))
+        XCTAssertTrue(parantheses(input: "()"))
+        XCTAssertTrue(parantheses(input: "[]"))
+        XCTAssertTrue(parantheses(input: "{}"))
+        XCTAssertTrue(parantheses(input: "()[]"))
+        XCTAssertTrue(parantheses(input: "(){}"))
+        XCTAssertTrue(parantheses(input: "[]{}"))
+        XCTAssertTrue(parantheses(input: "()[]{}"))
+        XCTAssertTrue(parantheses(input: "{}[]()"))
+        XCTAssertTrue(parantheses(input: "{[()]}"))
+        XCTAssertTrue(parantheses(input: "([]{})"))
+        XCTAssertTrue(parantheses(input: "({[]})"))
+        XCTAssertTrue(parantheses(input: "{()[]}"))
+        XCTAssertTrue(parantheses(input: "[({})]"))
+        XCTAssertTrue(parantheses(input: "(()())"))
+        XCTAssertTrue(parantheses(input: "{[()()]}"))
+        XCTAssertTrue(parantheses(input: "{[()()()]}"))
+        XCTAssertTrue(parantheses(input: "[[[{{{((()))}}}]]]"))
+        XCTAssertTrue(parantheses(input: "()()()()"))
+        XCTAssertTrue(parantheses(input: "({[]})()"))
+        XCTAssertTrue(parantheses(input: "()[]{}()[]{}"))
+        XCTAssertTrue(parantheses(input: "([])({})[[]]"))
+        XCTAssertTrue(parantheses(input: "((())){}[()]"))
+        XCTAssertTrue(parantheses(input: "{[()]}{[()]}{[()]}"))
+        XCTAssertTrue(parantheses(input: "((((()))))"))
+        XCTAssertTrue(parantheses(input: "({[()]})({[()]})"))
+        XCTAssertFalse(parantheses(input: "("))
+        XCTAssertFalse(parantheses(input: ")"))
+        XCTAssertFalse(parantheses(input: "([)]"))
+        XCTAssertFalse(parantheses(input: "{[}]"))
+        XCTAssertFalse(parantheses(input: ")("))
+        XCTAssertFalse(parantheses(input: "())"))
+        XCTAssertFalse(parantheses(input: "(()"))
+        XCTAssertFalse(parantheses(input: ")("))
+        XCTAssertFalse(parantheses(input: "]"))
+        XCTAssertFalse(parantheses(input: ")("))
+        XCTAssertFalse(parantheses(input: "(()]("))
+        XCTAssertFalse(parantheses(input: "((((((((("))
+        XCTAssertFalse(parantheses(input: "()(){"))
+        XCTAssertFalse(parantheses(input: "{[()]}("))
+        XCTAssertFalse(parantheses(input: "{[()]}["))
+        XCTAssertFalse(parantheses(input: "([)]{}"))
+        XCTAssertFalse(parantheses(input: "[][])("))
+        XCTAssertFalse(parantheses(input: "([)"))
+        XCTAssertFalse(parantheses(input: "()[}"))
+    }
 
 }

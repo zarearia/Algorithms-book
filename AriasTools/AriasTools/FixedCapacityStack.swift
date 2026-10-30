@@ -27,9 +27,10 @@ class FixedCapacityStack<Item> {
         n += 1
     }
     
-    func pop() -> Item {
+    func pop() -> Item? {
         if n <= 0 {
-            fatalError("[FixedCapacityStack] stack is empty")
+            print("[FixedCapacityStack] stack is empty")
+            return nil
         }
         let item = self.itemsArray[n-1];
         n -= 1
