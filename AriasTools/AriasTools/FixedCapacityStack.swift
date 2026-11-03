@@ -37,6 +37,14 @@ class FixedCapacityStack<Item> {
         return item
     }
     
+    func peek() -> Item? {
+        if n <= 0 {
+            print("[FixedCapacityStack] stack is empty")
+            return nil
+        }
+        return self.itemsArray[n-1];
+    }
+
     func isEmpty() -> Bool {
         return n == 0
     }
