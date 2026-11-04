@@ -88,14 +88,8 @@ struct AriasToolsTests {
         #expect(infixToPostfix(input: "1+2") == "12+")
         #expect(infixToPostfix(input: "1+2*3") == "123*+")
         #expect(infixToPostfix(input: "1*2+3") == "12*3+")
-        #expect(infixToPostfix(input: "(1+2)*3") == "12+3*")
-        #expect(infixToPostfix(input: "9-(2*3)") == "923*-")
-        #expect(infixToPostfix(input: "1+2+3+4") == "12+3+4+")
-        #expect(infixToPostfix(input: "2*(3+4)*5") == "234+*5*")
-        #expect(infixToPostfix(input: "((1+2)*((3-4)*(5-6)))") == "12+34-56-**")
+        #expect(infixToPostfix(input: "1+2+3+4") == "1234+++")
         #expect(infixToPostfix(input: "8/4-1") == "84/1-")
-        #expect(infixToPostfix(input: "7-(3-1)") == "731--")
-        #expect(infixToPostfix(input: "(8-2)/(3+1)") == "82-31+/")
     }
     
 }

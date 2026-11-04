@@ -100,13 +100,29 @@ func infixToPostfix(input: String) -> String {
     var string = input
     for i in input {
         let value = String(string.removeFirst())
-        if i == "+" || i == "*" || i == "-" {
+        if i == "+" || i == "-" || i == "*" || i == "/" {
             operationsStack.push(value)
             continue
         }
         
+//        if i == "*" || i == "/"{
+//            var lResult = ""
+//            lResult.insert(contentsOf: numbersStack.pop() ?? "", at: lResult.startIndex)
+//            lResult.insert(contentsOf: numbersStack.pop() ?? "", at: lResult.startIndex)
+//            lResult.append(value)
+//            numbersStack.push(lResult)
+//            continue
+//        }
+        
         if i.isNumber {
             numbersStack.push(value)
+            if operationsStack.peek() == "*" || operationsStack.peek() == "/"{
+                var lResult = ""
+                lResult.insert(contentsOf: numbersStack.pop() ?? "", at: lResult.startIndex)
+                lResult.insert(contentsOf: numbersStack.pop() ?? "", at: lResult.startIndex)
+                lResult.append(operationsStack.pop() ?? "")
+                numbersStack.push(lResult)
+            }
             continue
         }
     }
