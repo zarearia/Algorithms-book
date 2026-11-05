@@ -11,7 +11,7 @@ class FixedCapacityStack<Item>: Sequence {
     private var n: Int = 0
     var size: Int = 0
     
-    
+    //TODO: I'm not ok with having this defaultValue, find a way to fix it
     init(size: Int, defaultValue: Item) {
         self.size = size
         self.itemsArray = AriasArray(size: size, defaultValue: defaultValue)
@@ -54,15 +54,15 @@ class FixedCapacityStack<Item>: Sequence {
     }
     
     func makeIterator() -> AnyIterator<Item> {
-        var i = n
+        var i = 0
         return AnyIterator { [weak self] in
             guard let self = self,
-                  i >= 0 else {
+                  i < n else {
                 return nil
             }
             
             let value = self.itemsArray[i]
-            i -= 1
+            i += 1
             return value
         }
     }

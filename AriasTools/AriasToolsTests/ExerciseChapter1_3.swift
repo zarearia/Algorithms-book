@@ -110,6 +110,7 @@ struct AriasToolsTests {
         #expect(evaluatePostfix(input: "99*") == 81)
     }
     
+    // evaluate the print to see it works
     @Test func copy_on_iterable() {
         let stack = FixedCapacityStack(size: 10, defaultValue: "")
         stack.push("1")
@@ -119,6 +120,19 @@ struct AriasToolsTests {
         stack.push("5")
         stack.push("6")
         stack.push("7")
+        
+        for item in stack {
+            print(item)
+        }
+        
+        let stack2 = IterableStackClient.copy(stack: stack)
+        stack.pop()
+        stack.pop()
+        stack.pop()
+        stack.pop()
+        for item in stack2 {
+            print(item)
+        }
         
         for item in stack {
             print(item)

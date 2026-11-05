@@ -174,3 +174,15 @@ func evaluatePostfix(input: String) -> Int {
     
     return Int(numbersStack.pop()!)!
 }
+
+
+class IterableStackClient {
+    static func copy<Item>(stack: FixedCapacityStack<Item>) -> FixedCapacityStack<Item?> {
+        let newStack = FixedCapacityStack<Item?>(size: stack.size, defaultValue: nil)
+        for i in stack {
+            newStack.push(i)
+        }
+        
+        return newStack
+    }
+}
