@@ -92,4 +92,22 @@ struct AriasToolsTests {
         #expect(infixToPostfix(input: "8/4-1") == "84/1-")
     }
     
+    @Test func evaluate_postfix() {
+        #expect(evaluatePostfix(input: "1") == 1)
+        #expect(evaluatePostfix(input: "12+") == 3)
+        #expect(evaluatePostfix(input: "123*+") == 7)
+        #expect(evaluatePostfix(input: "12*3+") == 5)
+        #expect(evaluatePostfix(input: "12+3*") == 9)
+        #expect(evaluatePostfix(input: "923*-") == 3)
+        #expect(evaluatePostfix(input: "12+3+4+") == 10)
+        #expect(evaluatePostfix(input: "234+*5*") == 70)
+        #expect(evaluatePostfix(input: "12+34-56-**") == 3)
+        #expect(evaluatePostfix(input: "84/1-") == 1)
+        #expect(evaluatePostfix(input: "731--") == 5)
+        #expect(evaluatePostfix(input: "82-31+/") == 1)   // integer division: 6/4 == 1
+        #expect(evaluatePostfix(input: "23-") == -1)        // negative result
+        #expect(evaluatePostfix(input: "52/") == 2)         // integer division truncates
+        #expect(evaluatePostfix(input: "99*") == 81)
+    }
+    
 }

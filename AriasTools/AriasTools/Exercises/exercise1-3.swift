@@ -137,3 +137,40 @@ func infixToPostfix(input: String) -> String {
     
     return result
 }
+
+func evaluatePostfix(input: String) -> Int {
+    let operationsStack = FixedCapacityStack<String>(size: input.count, defaultValue: "")
+    let numbersStack = FixedCapacityStack<String>(size: input.count, defaultValue: "")
+    var string = input
+    for i in input {
+        let value = String(string.removeFirst())
+
+        if i == "+" || i == "-" || i == "*" || i == "/" {
+//            operationsStack.push(value)
+            let operation = value
+            let secondValue = Int(numbersStack.pop()!)!
+            let firstValue = Int(numbersStack.pop()!)!
+            
+            if operation == "+" {
+                numbersStack.push(String(firstValue + secondValue))
+            }
+            if operation == "-" {
+                numbersStack.push(String(firstValue - secondValue))
+            }
+            if operation == "/" {
+                numbersStack.push(String(firstValue / secondValue))
+            }
+            if operation == "*" {
+                numbersStack.push(String(firstValue * secondValue))
+            }
+        }
+        
+        if i.isNumber {
+            numbersStack.push(value)
+            
+            continue
+        }
+    }
+    
+    return Int(numbersStack.pop()!)!
+}
