@@ -5,7 +5,7 @@
 //  Created by Aria Zare on 29/10/2026.
 //
 
-class FixedCapacityStack<Item> {
+class FixedCapacityStack<Item>: Sequence {
     
     private var itemsArray: AriasArray<Item>
     private var n: Int = 0
@@ -52,4 +52,19 @@ class FixedCapacityStack<Item> {
     func isFull() -> Bool {
         return n == size
     }
+    
+    func makeIterator() -> AnyIterator<Item> {
+        var i = n
+        return AnyIterator { [weak self] in
+            guard let self = self,
+                  i >= 0 else {
+                return nil
+            }
+            
+            let value = self.itemsArray[i]
+            i -= 1
+            return value
+        }
+    }
+    
 }

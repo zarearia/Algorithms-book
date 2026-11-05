@@ -110,4 +110,19 @@ struct AriasToolsTests {
         #expect(evaluatePostfix(input: "99*") == 81)
     }
     
+    @Test func copy_on_iterable() {
+        let stack = FixedCapacityStack(size: 10, defaultValue: "")
+        stack.push("1")
+        stack.push("2")
+        stack.push("3")
+        stack.push("4")
+        stack.push("5")
+        stack.push("6")
+        stack.push("7")
+        
+        for item in stack {
+            print(item)
+        }
+
+    }
 }
