@@ -140,3 +140,40 @@ struct AriasToolsTests {
 
     }
 }
+
+
+struct ResizingArrayQueueOfStringsTests {
+
+    @Test func empty_queue() {
+        let q = ResizingArrayQueueOfStrings<Int>(size: 3, defaultValue: 0)
+        #expect(q.isEmpty())
+        #expect(!q.isFull())
+    }
+
+    @Test func fifo_order_over_many_items() {
+        let q = ResizingArrayQueueOfStrings<Int>(size: 10, defaultValue: 0)
+        let values = Array(1...10)
+        for v in values { q.enqueue(v) }
+        #expect(q.isFull())
+        for v in values {
+            #expect(q.dequeue() == v, "FIFO violated at \(v)")
+        }
+        #expect(q.isEmpty())
+    }
+
+    @Test func fills_up_to_capacity() {
+        let q = ResizingArrayQueueOfStrings<Int>(size: 2, defaultValue: -1)
+        q.enqueue(1)
+        #expect(!q.isFull())
+        q.enqueue(2)
+        #expect(q.isFull())
+    }
+
+    @Test func interleaved_operations() {
+        let q = ResizingArrayQueueOfStrings<String>(size: 4, defaultValue: "")
+        q.enqueue("a"); q.enqueue("b")
+        #expect(q.dequeue() == "a")
+        #expect(q.dequeue() == "b")
+        #expect(q.isEmpty())
+    }
+}
