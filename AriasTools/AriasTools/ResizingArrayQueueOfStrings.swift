@@ -25,6 +25,12 @@ class ResizingArrayQueueOfStrings<Item> {
     }
     
     func dequeue() -> Item? {
+        if head >= tail || count == 0{
+            head = 0
+            tail = 0
+            count = 0
+            return nil
+        }
         let item = itemsArray[head]
         head += 1
         count -= 1
@@ -49,19 +55,19 @@ class ResizingArrayQueueOfStrings<Item> {
                     newArray[i] = itemsArray[i]
                 }
             }
-//            if count <= arraySize / 4 {
-//                //resizing
-//                print("HERE")
-//                arraySize /= 4
-//                newArray = AriasArray<Item?>(size: arraySize, defaultValue: nil)
-//                for i in head..<tail {
-//                    newArray[i - head] = itemsArray[i]
-//                }
-//                
-//                let oldHead = head
-//                head = 0
-//                tail -= oldHead
-//            }
+            if count <= arraySize / 4 {
+                //resizing
+                print("HERE")
+                arraySize /= 2
+                newArray = AriasArray<Item?>(size: arraySize, defaultValue: nil)
+                for i in head..<tail {
+                    newArray[i - head] = itemsArray[i]
+                }
+                
+                let oldHead = head
+                head = 0
+                tail -= oldHead
+            }
             else {
                 //rearranging
                 newArray = AriasArray<Item?>(size: arraySize, defaultValue: nil)

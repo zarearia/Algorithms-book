@@ -222,82 +222,82 @@ struct ResizingArrayQueueOfStringsTests {
             #expect(q.count == model.count, "count drifted at step \(i)")
         }
     }
-//    
-//    @Test func dequeue_on_empty_returns_nil() {
-//        let q = ResizingArrayQueueOfStrings<Int>()
-//        #expect(q.dequeue() == nil)
-//        q.enqueue(1)
-//        #expect(q.dequeue() == 1)
-//        #expect(q.dequeue() == nil)
-//        #expect(q.count == 0)
-//    }
-//
-//    @Test func shrink_after_draining_most_items() {
-//        let q = ResizingArrayQueueOfStrings<Int>()
-//        for v in 1...32 { q.enqueue(v) }        // forces several grows
-//        #expect(q.count == 32)
-//        for v in 1...30 {                        // drain to 2 items → shrink branch
-//            #expect(q.dequeue() == v, "FIFO violated at \(v)")
-//        }
-//        #expect(q.count == 2)
-//        #expect(q.dequeue() == 31)
-//        #expect(q.dequeue() == 32)
-//        #expect(q.count == 0)
-//        #expect(q.dequeue() == nil)
-//    }
-//
-//    @Test func order_preserved_after_shrink_then_refill() {
-//        let q = ResizingArrayQueueOfStrings<String>()
-//        for s in ["a","b","c","d","e","f","g","h"] { q.enqueue(s) }
-//        #expect(q.dequeue() == "a")
-//        #expect(q.dequeue() == "b")
-//        #expect(q.dequeue() == "c")
-//        #expect(q.dequeue() == "d")
-//        #expect(q.dequeue() == "e")
-//        #expect(q.dequeue() == "f")             // count now 2 → shrink territory
-//        q.enqueue("x"); q.enqueue("y"); q.enqueue("z")
-//        #expect(q.dequeue() == "g")
-//        #expect(q.dequeue() == "h")
-//        #expect(q.dequeue() == "x")
-//        #expect(q.dequeue() == "y")
-//        #expect(q.dequeue() == "z")
-//        #expect(q.dequeue() == nil)
-//    }
-//
-//    @Test func repeated_grow_and_shrink_cycles() {
-//        let q = ResizingArrayQueueOfStrings<Int>()
-//        var model = [Int]()
-//        var next = 0
-//        for _ in 0..<20 {
-//            for _ in 0..<10 {
-//                q.enqueue(next); model.append(next); next += 1
-//            }
-//            for _ in 0..<9 {
-//                #expect(q.dequeue() == model.removeFirst())
-//            }
-//            #expect(q.count == model.count)
-//        }
-//        while !model.isEmpty {
-//            #expect(q.dequeue() == model.removeFirst())
-//        }
-//        #expect(q.count == 0)
-//    }
-//
-//    @Test func stress_grow_shrink_against_model() {
-//        let q = ResizingArrayQueueOfStrings<Int>()
-//        var model = [Int]()
-//        var next = 0
-//        for i in 0..<2000 {
-//            if model.count < 8 || i % 5 != 0 {
-//                q.enqueue(next); model.append(next); next += 1
-//            } else if !model.isEmpty {
-//                #expect(q.dequeue() == model.removeFirst())
-//            }
-//            #expect(q.count == model.count, "count drifted at step \(i)")
-//        }
-//        while !model.isEmpty {
-//            #expect(q.dequeue() == model.removeFirst())
-//        }
-//        #expect(q.count == 0)
-//    }
+    
+    @Test func dequeue_on_empty_returns_nil() {
+        let q = ResizingArrayQueueOfStrings<Int>()
+        #expect(q.dequeue() == nil)
+        q.enqueue(1)
+        #expect(q.dequeue() == 1)
+        #expect(q.dequeue() == nil)
+        #expect(q.count == 0)
+    }
+
+    @Test func shrink_after_draining_most_items() {
+        let q = ResizingArrayQueueOfStrings<Int>()
+        for v in 1...32 { q.enqueue(v) }        // forces several grows
+        #expect(q.count == 32)
+        for v in 1...30 {                        // drain to 2 items → shrink branch
+            #expect(q.dequeue() == v, "FIFO violated at \(v)")
+        }
+        #expect(q.count == 2)
+        #expect(q.dequeue() == 31)
+        #expect(q.dequeue() == 32)
+        #expect(q.count == 0)
+        #expect(q.dequeue() == nil)
+    }
+
+    @Test func order_preserved_after_shrink_then_refill() {
+        let q = ResizingArrayQueueOfStrings<String>()
+        for s in ["a","b","c","d","e","f","g","h"] { q.enqueue(s) }
+        #expect(q.dequeue() == "a")
+        #expect(q.dequeue() == "b")
+        #expect(q.dequeue() == "c")
+        #expect(q.dequeue() == "d")
+        #expect(q.dequeue() == "e")
+        #expect(q.dequeue() == "f")             // count now 2 → shrink territory
+        q.enqueue("x"); q.enqueue("y"); q.enqueue("z")
+        #expect(q.dequeue() == "g")
+        #expect(q.dequeue() == "h")
+        #expect(q.dequeue() == "x")
+        #expect(q.dequeue() == "y")
+        #expect(q.dequeue() == "z")
+        #expect(q.dequeue() == nil)
+    }
+
+    @Test func repeated_grow_and_shrink_cycles() {
+        let q = ResizingArrayQueueOfStrings<Int>()
+        var model = [Int]()
+        var next = 0
+        for _ in 0..<20 {
+            for _ in 0..<10 {
+                q.enqueue(next); model.append(next); next += 1
+            }
+            for _ in 0..<9 {
+                #expect(q.dequeue() == model.removeFirst())
+            }
+            #expect(q.count == model.count)
+        }
+        while !model.isEmpty {
+            #expect(q.dequeue() == model.removeFirst())
+        }
+        #expect(q.count == 0)
+    }
+
+    @Test func stress_grow_shrink_against_model() {
+        let q = ResizingArrayQueueOfStrings<Int>()
+        var model = [Int]()
+        var next = 0
+        for i in 0..<2000 {
+            if model.count < 8 || i % 5 != 0 {
+                q.enqueue(next); model.append(next); next += 1
+            } else if !model.isEmpty {
+                #expect(q.dequeue() == model.removeFirst())
+            }
+            #expect(q.count == model.count, "count drifted at step \(i)")
+        }
+        while !model.isEmpty {
+            #expect(q.dequeue() == model.removeFirst())
+        }
+        #expect(q.count == 0)
+    }
 }
