@@ -141,39 +141,163 @@ struct AriasToolsTests {
     }
 }
 
-
 struct ResizingArrayQueueOfStringsTests {
 
-    @Test func empty_queue() {
-        let q = ResizingArrayQueueOfStrings<Int>(size: 3, defaultValue: 0)
-        #expect(q.isEmpty())
-        #expect(!q.isFull())
+    @Test func starts_empty() {
+        let q = ResizingArrayQueueOfStrings<Int>()
+        #expect(q.count == 0)
     }
 
-    @Test func fifo_order_over_many_items() {
-        let q = ResizingArrayQueueOfStrings<Int>(size: 10, defaultValue: 0)
-        let values = Array(1...10)
+    @Test func single_item() {
+        let q = ResizingArrayQueueOfStrings<Int>()
+        q.enqueue(7)
+        #expect(q.count == 1)
+        #expect(q.dequeue() == 7)
+        #expect(q.count == 0)
+    }
+
+    @Test func fifo_order() {
+        let q = ResizingArrayQueueOfStrings<Int>()
+        for v in 1...10 { q.enqueue(v) }
+        #expect(q.count == 10)
+        for v in 1...10 {
+            #expect(q.dequeue() == v, "FIFO violated at \(v)")
+        }
+        #expect(q.count == 0)
+    }
+
+    @Test func grows_well_beyond_initial_capacity() {
+        let q = ResizingArrayQueueOfStrings<Int>()
+        let values = Array(1...100)
         for v in values { q.enqueue(v) }
-        #expect(q.isFull())
+        #expect(q.count == 100)
         for v in values {
             #expect(q.dequeue() == v, "FIFO violated at \(v)")
         }
-        #expect(q.isEmpty())
+        #expect(q.count == 0)
     }
 
-    @Test func fills_up_to_capacity() {
-        let q = ResizingArrayQueueOfStrings<Int>(size: 2, defaultValue: -1)
-        q.enqueue(1)
-        #expect(!q.isFull())
-        q.enqueue(2)
-        #expect(q.isFull())
+    @Test func enqueue_after_full_drain() {
+        let q = ResizingArrayQueueOfStrings<Int>()
+        q.enqueue(1); q.enqueue(2); q.enqueue(3)
+        #expect(q.dequeue() == 1)
+        #expect(q.dequeue() == 2)
+        #expect(q.dequeue() == 3)
+        q.enqueue(4); q.enqueue(5)
+        #expect(q.dequeue() == 4)
+        #expect(q.dequeue() == 5)
+        #expect(q.count == 0)
     }
 
-    @Test func interleaved_operations() {
-        let q = ResizingArrayQueueOfStrings<String>(size: 4, defaultValue: "")
-        q.enqueue("a"); q.enqueue("b")
-        #expect(q.dequeue() == "a")
-        #expect(q.dequeue() == "b")
-        #expect(q.isEmpty())
+    @Test func interleaved_enqueue_dequeue_keeps_order() {
+        let q = ResizingArrayQueueOfStrings<String>()
+        var expected: [String] = []
+        var next = 0
+        for _ in 0..<50 {
+            for _ in 0..<3 {
+                let s = "item\(next)"; next += 1
+                q.enqueue(s); expected.append(s)
+            }
+            for _ in 0..<2 {
+                #expect(q.dequeue() == expected.removeFirst())
+            }
+            #expect(q.count == expected.count)
+        }
+        while !expected.isEmpty {
+            #expect(q.dequeue() == expected.removeFirst())
+        }
+        #expect(q.count == 0)
     }
+
+    @Test func stress_mixed_operations_against_array_model() {
+        let q = ResizingArrayQueueOfStrings<Int>()
+        var model = [Int]()
+        var next = 0
+        for i in 0..<1000 {
+            if model.isEmpty || i % 3 != 0 {
+                q.enqueue(next); model.append(next); next += 1
+            } else {
+                #expect(q.dequeue() == model.removeFirst())
+            }
+            #expect(q.count == model.count, "count drifted at step \(i)")
+        }
+    }
+//    
+//    @Test func dequeue_on_empty_returns_nil() {
+//        let q = ResizingArrayQueueOfStrings<Int>()
+//        #expect(q.dequeue() == nil)
+//        q.enqueue(1)
+//        #expect(q.dequeue() == 1)
+//        #expect(q.dequeue() == nil)
+//        #expect(q.count == 0)
+//    }
+//
+//    @Test func shrink_after_draining_most_items() {
+//        let q = ResizingArrayQueueOfStrings<Int>()
+//        for v in 1...32 { q.enqueue(v) }        // forces several grows
+//        #expect(q.count == 32)
+//        for v in 1...30 {                        // drain to 2 items → shrink branch
+//            #expect(q.dequeue() == v, "FIFO violated at \(v)")
+//        }
+//        #expect(q.count == 2)
+//        #expect(q.dequeue() == 31)
+//        #expect(q.dequeue() == 32)
+//        #expect(q.count == 0)
+//        #expect(q.dequeue() == nil)
+//    }
+//
+//    @Test func order_preserved_after_shrink_then_refill() {
+//        let q = ResizingArrayQueueOfStrings<String>()
+//        for s in ["a","b","c","d","e","f","g","h"] { q.enqueue(s) }
+//        #expect(q.dequeue() == "a")
+//        #expect(q.dequeue() == "b")
+//        #expect(q.dequeue() == "c")
+//        #expect(q.dequeue() == "d")
+//        #expect(q.dequeue() == "e")
+//        #expect(q.dequeue() == "f")             // count now 2 → shrink territory
+//        q.enqueue("x"); q.enqueue("y"); q.enqueue("z")
+//        #expect(q.dequeue() == "g")
+//        #expect(q.dequeue() == "h")
+//        #expect(q.dequeue() == "x")
+//        #expect(q.dequeue() == "y")
+//        #expect(q.dequeue() == "z")
+//        #expect(q.dequeue() == nil)
+//    }
+//
+//    @Test func repeated_grow_and_shrink_cycles() {
+//        let q = ResizingArrayQueueOfStrings<Int>()
+//        var model = [Int]()
+//        var next = 0
+//        for _ in 0..<20 {
+//            for _ in 0..<10 {
+//                q.enqueue(next); model.append(next); next += 1
+//            }
+//            for _ in 0..<9 {
+//                #expect(q.dequeue() == model.removeFirst())
+//            }
+//            #expect(q.count == model.count)
+//        }
+//        while !model.isEmpty {
+//            #expect(q.dequeue() == model.removeFirst())
+//        }
+//        #expect(q.count == 0)
+//    }
+//
+//    @Test func stress_grow_shrink_against_model() {
+//        let q = ResizingArrayQueueOfStrings<Int>()
+//        var model = [Int]()
+//        var next = 0
+//        for i in 0..<2000 {
+//            if model.count < 8 || i % 5 != 0 {
+//                q.enqueue(next); model.append(next); next += 1
+//            } else if !model.isEmpty {
+//                #expect(q.dequeue() == model.removeFirst())
+//            }
+//            #expect(q.count == model.count, "count drifted at step \(i)")
+//        }
+//        while !model.isEmpty {
+//            #expect(q.dequeue() == model.removeFirst())
+//        }
+//        #expect(q.count == 0)
+//    }
 }
