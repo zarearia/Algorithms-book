@@ -144,12 +144,12 @@ struct AriasToolsTests {
 struct ResizingArrayQueueOfStringsTests {
 
     @Test func starts_empty() {
-        let q = ResizingArrayQueueOfStrings<Int>()
+        let q = ResizingArrayQueue<Int>()
         #expect(q.count == 0)
     }
 
     @Test func single_item() {
-        let q = ResizingArrayQueueOfStrings<Int>()
+        let q = ResizingArrayQueue<Int>()
         q.enqueue(7)
         #expect(q.count == 1)
         #expect(q.dequeue() == 7)
@@ -157,7 +157,7 @@ struct ResizingArrayQueueOfStringsTests {
     }
 
     @Test func fifo_order() {
-        let q = ResizingArrayQueueOfStrings<Int>()
+        let q = ResizingArrayQueue<Int>()
         for v in 1...10 { q.enqueue(v) }
         #expect(q.count == 10)
         for v in 1...10 {
@@ -167,7 +167,7 @@ struct ResizingArrayQueueOfStringsTests {
     }
 
     @Test func grows_well_beyond_initial_capacity() {
-        let q = ResizingArrayQueueOfStrings<Int>()
+        let q = ResizingArrayQueue<Int>()
         let values = Array(1...100)
         for v in values { q.enqueue(v) }
         #expect(q.count == 100)
@@ -178,7 +178,7 @@ struct ResizingArrayQueueOfStringsTests {
     }
 
     @Test func enqueue_after_full_drain() {
-        let q = ResizingArrayQueueOfStrings<Int>()
+        let q = ResizingArrayQueue<Int>()
         q.enqueue(1); q.enqueue(2); q.enqueue(3)
         #expect(q.dequeue() == 1)
         #expect(q.dequeue() == 2)
@@ -190,7 +190,7 @@ struct ResizingArrayQueueOfStringsTests {
     }
 
     @Test func interleaved_enqueue_dequeue_keeps_order() {
-        let q = ResizingArrayQueueOfStrings<String>()
+        let q = ResizingArrayQueue<String>()
         var expected: [String] = []
         var next = 0
         for _ in 0..<50 {
@@ -210,7 +210,7 @@ struct ResizingArrayQueueOfStringsTests {
     }
 
     @Test func stress_mixed_operations_against_array_model() {
-        let q = ResizingArrayQueueOfStrings<Int>()
+        let q = ResizingArrayQueue<Int>()
         var model = [Int]()
         var next = 0
         for i in 0..<1000 {
@@ -224,7 +224,7 @@ struct ResizingArrayQueueOfStringsTests {
     }
     
     @Test func dequeue_on_empty_returns_nil() {
-        let q = ResizingArrayQueueOfStrings<Int>()
+        let q = ResizingArrayQueue<Int>()
         #expect(q.dequeue() == nil)
         q.enqueue(1)
         #expect(q.dequeue() == 1)
@@ -233,7 +233,7 @@ struct ResizingArrayQueueOfStringsTests {
     }
 
     @Test func shrink_after_draining_most_items() {
-        let q = ResizingArrayQueueOfStrings<Int>()
+        let q = ResizingArrayQueue<Int>()
         for v in 1...32 { q.enqueue(v) }        // forces several grows
         #expect(q.count == 32)
         for v in 1...30 {                        // drain to 2 items → shrink branch
@@ -247,7 +247,7 @@ struct ResizingArrayQueueOfStringsTests {
     }
 
     @Test func order_preserved_after_shrink_then_refill() {
-        let q = ResizingArrayQueueOfStrings<String>()
+        let q = ResizingArrayQueue<String>()
         for s in ["a","b","c","d","e","f","g","h"] { q.enqueue(s) }
         #expect(q.dequeue() == "a")
         #expect(q.dequeue() == "b")
@@ -265,7 +265,7 @@ struct ResizingArrayQueueOfStringsTests {
     }
 
     @Test func repeated_grow_and_shrink_cycles() {
-        let q = ResizingArrayQueueOfStrings<Int>()
+        let q = ResizingArrayQueue<Int>()
         var model = [Int]()
         var next = 0
         for _ in 0..<20 {
@@ -284,7 +284,7 @@ struct ResizingArrayQueueOfStringsTests {
     }
 
     @Test func stress_grow_shrink_against_model() {
-        let q = ResizingArrayQueueOfStrings<Int>()
+        let q = ResizingArrayQueue<Int>()
         var model = [Int]()
         var next = 0
         for i in 0..<2000 {
@@ -367,5 +367,52 @@ struct KthLastStringTests {
         #expect(kth.getKth(3) == "one")
         #expect(kth.getKth(2) == "two")
         #expect(kth.getKth(1) == "three")
+    }
+}
+
+struct ReadAllTests {
+
+    @Test func empty_returns_empty_array() {
+        let reader = ReadAll<Int>()
+        #expect(reader.readAllDates().isEmpty)
+    }
+
+    @Test func single_input() {
+        let reader = ReadAll<String>()
+        reader.standardInput(with: "hello")
+        #expect(reader.readAllDates() == ["hello"])
+    }
+
+    @Test func multiple_inputs_come_out_in_fifo_order() {
+        let reader = ReadAll<Int>()
+        let inputs = [5, 3, 8, 1, 9, 2]
+        for i in inputs { reader.standardInput(with: i) }
+        #expect(reader.readAllDates() == inputs)
+    }
+
+    @Test func larger_input_set() {
+        let reader = ReadAll<Int>()
+        let inputs = Array(1...50)
+        for i in inputs { reader.standardInput(with: i) }
+        #expect(reader.readAllDates() == inputs)
+    }
+
+    @Test func readAll_consumes_the_queue() {
+        let reader = ReadAll<String>()
+        reader.standardInput(with: "a")
+        reader.standardInput(with: "b")
+        #expect(reader.readAllDates() == ["a", "b"])
+        #expect(reader.readAllDates().isEmpty)   // second read gets nothing
+    }
+
+    @Test func interleaved_input_and_read() {
+        let reader = ReadAll<Int>()
+        reader.standardInput(with: 1)
+        reader.standardInput(with: 2)
+        #expect(reader.readAllDates() == [1, 2])
+        reader.standardInput(with: 3)
+        reader.standardInput(with: 4)
+        #expect(reader.readAllDates() == [3, 4])
+        #expect(reader.readAllDates().isEmpty)
     }
 }

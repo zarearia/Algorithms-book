@@ -5,7 +5,7 @@
 //  Created by Aria Zare on 09/11/2026.
 //
 
-class ResizingArrayQueueOfStrings<Item> {
+class ResizingArrayQueue<Item> {
     private var itemsArray: AriasArray<Item?>
     private var tail: Int = 0
     private var head: Int = 0

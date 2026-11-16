@@ -199,17 +199,43 @@ class KthLastString {
         if kth > stack.size {
             return nil
         }
-        var backUpStack = FixedCapacityStack<String?>(size: kth, defaultValue: nil)
+        let backUpStack = FixedCapacityStack<String?>(size: kth, defaultValue: nil)
         var value: String? = nil
-        for i in 0..<kth {
+        for _ in 0..<kth {
             value = stack.pop() ?? nil
             backUpStack.push(value)
         }
         
-        for i in 0..<kth {
+        for _ in 0..<kth {
             stack.push(backUpStack.pop() ?? nil)
         }
         
         return value
     }
 }
+
+
+//1.3.16 and 1.3.17
+// since it is generic, date and transaction won't change anything
+
+class ReadAll<Item> {
+    var queue = ResizingArrayQueue<Item>()
+
+    func standardInput(with input: Item) {
+        queue.enqueue(input)
+    }
+    
+    public func readAllDates() -> [Item?] {
+        
+        let n = queue.count
+        var output: [Item?] = [Item?]()
+        for _ in 0..<n {
+            output.append(queue.dequeue())
+        }
+        return output
+        
+    }
+}
+
+//MARK: Linked-Lust Exercises
+/////////////////////////////////////
