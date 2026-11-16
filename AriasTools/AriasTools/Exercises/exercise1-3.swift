@@ -186,3 +186,30 @@ class IterableStackClient {
         return newStack
     }
 }
+
+class KthLastString {
+    
+    var stack = FixedCapacityStack<String?>(size: 100, defaultValue: nil)
+
+    func standardInput(with input: String) {
+        stack.push(input)
+    }
+    
+    func getKth(_ kth: Int) -> String? {
+        if kth > stack.size {
+            return nil
+        }
+        var backUpStack = FixedCapacityStack<String?>(size: kth, defaultValue: nil)
+        var value: String? = nil
+        for i in 0..<kth {
+            value = stack.pop() ?? nil
+            backUpStack.push(value)
+        }
+        
+        for i in 0..<kth {
+            stack.push(backUpStack.pop() ?? nil)
+        }
+        
+        return value
+    }
+}

@@ -301,3 +301,71 @@ struct ResizingArrayQueueOfStringsTests {
         #expect(q.count == 0)
     }
 }
+
+
+struct KthLastStringTests {
+
+    @Test func empty_input_returns_nil() {
+        let kth = KthLastString()
+        #expect(kth.getKth(1) == nil)
+    }
+
+    @Test func single_input() {
+        let kth = KthLastString()
+        kth.standardInput(with: "hello")
+        #expect(kth.getKth(1) == "hello")
+    }
+    
+    @Test func kth_from_last_with_ten_inputs() {
+        let kth = KthLastString()
+        let inputs = ["a","b","c","d","e","f","g","h","i","j"]
+        for s in inputs { kth.standardInput(with: s) }
+
+        #expect(kth.getKth(1) == "j")
+        #expect(kth.getKth(2) == "i")
+        #expect(kth.getKth(5) == "f")
+        #expect(kth.getKth(10) == "a")
+
+        // stack was NOT consumed: same answers on repeat, and new input still works
+        #expect(kth.getKth(10) == "a")
+        #expect(kth.getKth(1) == "j")
+        kth.standardInput(with: "k")
+        #expect(kth.getKth(11) == "a")
+        #expect(kth.getKth(1) == "k")
+    }
+
+    @Test func k_out_of_range_returns_nil_but_keeps_stack() {
+        let kth = KthLastString()
+        kth.standardInput(with: "x")
+        kth.standardInput(with: "y")
+        #expect(kth.getKth(3) == nil)
+        #expect(kth.getKth(0) == nil)
+        // failed lookups must not have removed anything
+        #expect(kth.getKth(1) == "y")
+        #expect(kth.getKth(2) == "x")
+    }
+
+    @Test func getKth_does_not_consume_input() {
+        let kth = KthLastString()
+        kth.standardInput(with: "a")
+        kth.standardInput(with: "b")
+        kth.standardInput(with: "c")
+        #expect(kth.getKth(2) == "b")
+        #expect(kth.getKth(2) == "b")    // same answer on repeat call
+        #expect(kth.getKth(1) == "c")
+        #expect(kth.getKth(3) == "a")    // all three still present
+    }
+
+    @Test func interleaved_calls() {
+        let kth = KthLastString()
+        kth.standardInput(with: "one")
+        #expect(kth.getKth(1) == "one")
+        kth.standardInput(with: "two")
+        #expect(kth.getKth(1) == "two")
+        #expect(kth.getKth(2) == "one")   // "one" still there after previous getKth
+        kth.standardInput(with: "three")
+        #expect(kth.getKth(3) == "one")
+        #expect(kth.getKth(2) == "two")
+        #expect(kth.getKth(1) == "three")
+    }
+}
