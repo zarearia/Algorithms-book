@@ -416,3 +416,85 @@ struct ReadAllTests {
         #expect(reader.readAllDates().isEmpty)
     }
 }
+
+
+//Linked list
+
+import XCTest
+
+final class RemoveLastNodeTests: XCTestCase {
+
+    private func makeList<T>(_ values: [T]) -> Node<T>? {
+        var head: Node<T>?
+        for v in values.reversed() {
+            let node = Node(value: v)
+            node.next = head
+            head = node
+        }
+        return head
+    }
+
+    private func toArray<T>(_ first: Node<T>?) -> [T] {
+        var result: [T] = []
+        var current = first
+        while let node = current {
+            result.append(node.value)
+            current = node.next
+        }
+        return result
+    }
+
+    func testRemovesLastNodeFromMultiNodeList() {
+        let head = makeList([1, 2, 3, 4])!
+        removeLastNode(first: head)
+        XCTAssertEqual(toArray(head), [1, 2, 3])
+    }
+
+    func testRemovesLastNodeFromTwoNodeList() {
+        let head = makeList(["a", "b"])!
+        removeLastNode(first: head)
+        XCTAssertEqual(toArray(head), ["a"])
+        XCTAssertNil(head.next)
+    }
+
+    func testSingleNodeListIsUnchanged() {
+        let head = makeList([42])!
+        removeLastNode(first: head)
+        XCTAssertEqual(toArray(head), [42])
+        XCTAssertNil(head.next)
+    }
+
+    func testHeadIdentityIsPreserved() {
+        let head = makeList([1, 2, 3])!
+        removeLastNode(first: head)
+        XCTAssertEqual(head.value, 1)
+        XCTAssertEqual(head.next?.value, 2)
+    }
+
+    func testRemovedNodeIsUnreachableFromHead() {
+        let head = makeList([1, 2, 3])!
+        let last = head.next!.next!
+        removeLastNode(first: head)
+        XCTAssertFalse(toArray(head).contains(last.value))
+        XCTAssertNil(head.next?.next)
+    }
+
+    func testRepeatedRemovalShrinksListToOneNode() {
+        let head = makeList([1, 2, 3, 4, 5])!
+        var expected = [1, 2, 3, 4, 5]
+        while expected.count > 1 {
+            removeLastNode(first: head)
+            expected.removeLast()
+            XCTAssertEqual(toArray(head), expected)
+        }
+        removeLastNode(first: head) // no-op on single node
+        XCTAssertEqual(toArray(head), [1])
+    }
+
+    func testLongList() {
+        let values = Array(0..<10_000)
+        let head = makeList(values)!
+        removeLastNode(first: head)
+        XCTAssertEqual(toArray(head), Array(values.dropLast()))
+    }
+}

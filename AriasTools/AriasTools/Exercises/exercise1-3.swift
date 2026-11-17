@@ -239,3 +239,61 @@ class ReadAll<Item> {
 
 //MARK: Linked-Lust Exercises
 /////////////////////////////////////
+
+class Node<Item> {
+    var value: Item
+    var next: Node<Item>? = nil
+    
+    init(value: Item) {
+        self.value = value
+    }
+}
+
+
+func removeLastNode<Item>(first: Node<Item>) {
+    var currentNode = first
+    var lastNode = currentNode
+    while currentNode.next != nil {
+        lastNode = currentNode
+        if let next = currentNode.next {
+            currentNode = next
+        }
+    }
+    
+    lastNode.next = nil
+}
+
+
+func delete<Item>(kth: Int, first: Node<Item>) {
+    var currentNode: Node<Item>? = first
+    var lastNode = currentNode
+    for _ in 1..<kth {
+        if currentNode == nil {
+            break
+        }
+        lastNode = currentNode
+        currentNode = currentNode?.next
+    }
+    
+    lastNode?.next = currentNode?.next
+}
+
+func find(first: Node<String>, key: String) -> Bool {
+    var currentNode: Node<String>? = first
+    while currentNode != nil {
+        if currentNode?.value == key {
+            return true
+        }
+        currentNode = currentNode?.next
+    }
+     
+    return false
+}
+
+func removeAfter<Item>(node: Node<Item>?) {
+    guard (node != nil || node?.next != nil) else {
+        return
+    }
+    
+    node?.next = node?.next?.next
+}
