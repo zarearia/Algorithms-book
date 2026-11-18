@@ -297,3 +297,56 @@ func removeAfter<Item>(node: Node<Item>?) {
     
     node?.next = node?.next?.next
 }
+
+func insertAfter<Item>(first: Node<Item>?, second: Node<Item>?) {
+    guard (first != nil || second != nil) else {
+        return
+    }
+    
+    first?.next?.next = second?.next
+    first?.next = second
+}
+
+func remove(first: Node<String>, key: String) {
+    var currentNode: Node<String>? = first
+    var oldNode: Node<String>? = first
+    
+    while currentNode != nil {
+        if currentNode?.value == key {
+            oldNode?.next = currentNode?.next
+        }
+        oldNode = currentNode
+        currentNode = currentNode?.next
+    }
+     
+}
+
+func max(first: Node<Int>) -> Int {
+    var max = 0;
+    var currentNode: Node<Int>? = first
+    while currentNode != nil {
+        if let value = currentNode?.value {
+            if value > max {
+                max = value
+            }
+        }
+        currentNode = currentNode?.next
+    }
+    
+    return max
+}
+
+func recursiveMax(first: Node<Int>?, max: Int = 0) -> Int {
+    if first == nil {
+        return max
+    }
+    
+    var lmax = max
+    if let value = first?.value {
+        if value > max {
+            lmax = value
+        }
+    }
+    
+    return recursiveMax(first: first?.next, max: lmax)
+}

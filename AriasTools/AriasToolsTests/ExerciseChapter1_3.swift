@@ -497,4 +497,26 @@ final class RemoveLastNodeTests: XCTestCase {
         removeLastNode(first: head)
         XCTAssertEqual(toArray(head), Array(values.dropLast()))
     }
+    
+    
+    func testrecursiveMaxTest() {
+        let head = makeList([1, 2, 3, 4, 5])!
+        let expected = 5
+        XCTAssertEqual(recursiveMax(first: head), expected)
+    }
+    
+    func testrecursiveMaxTest2() {
+        let head = makeList([1, 2, 3, 4, 5, 4, 3])!
+        let expected = 5
+        XCTAssertEqual(recursiveMax(first: head), expected)
+    }
+    
+    func testrecursiveMaxTest3() {
+        let head = makeList([12, 2, 3, 4, 5, 4, 3])!
+        let expected = 12
+        XCTAssertEqual(recursiveMax(first: head), expected)
+    }
 }
+
+
+
