@@ -240,7 +240,7 @@ class ReadAll<Item> {
 //MARK: Linked-Lust Exercises
 /////////////////////////////////////
 
-class Node<Item> {
+class Node<Item>: {
     var value: Item
     var next: Node<Item>? = nil
     
@@ -349,4 +349,27 @@ func recursiveMax(first: Node<Int>?, max: Int = 0) -> Int {
     }
     
     return recursiveMax(first: first?.next, max: lmax)
+}
+
+
+func reverse<Item>(first: Node<Item>) -> Node<Item>? {
+    var firstNode: Node<Item>? = first
+    var count = 0
+    while true {
+        if let node = firstNode {
+            count += 1
+            var backupOfNextNode = Node(value: node.next!.value)
+            backupOfNextNode.next = node.next
+            var secondNode = node.next
+            secondNode?.next = firstNode
+            if (count == 1) {
+                firstNode?.next = nil
+            }
+            if (backupOfNextNode.next == nil) {
+                return secondNode
+            }
+            firstNode = backupOfNextNode
+        }
+    }
+    return nil
 }

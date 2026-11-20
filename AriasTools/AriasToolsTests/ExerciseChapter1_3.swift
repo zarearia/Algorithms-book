@@ -520,3 +520,139 @@ final class RemoveLastNodeTests: XCTestCase {
 
 
 
+import Testing
+@testable import AriasTools
+
+struct LinkedListQueueTests {
+
+    @Test func starts_empty() {
+        let q = LinkedListQueue<Int>()
+        #expect(q.count == 0)
+        #expect(q.dequeue() == nil)
+    }
+
+    @Test func single_item() {
+        let q = LinkedListQueue<Int>()
+        q.enqueue(item: 7)
+        #expect(q.count == 1)
+        #expect(q.dequeue() == 7)
+        #expect(q.count == 0)
+        #expect(q.dequeue() == nil)
+    }
+
+    @Test func two_items_fifo() {
+        let q = LinkedListQueue<String>()
+        q.enqueue(item: "a")
+        q.enqueue(item: "b")
+        #expect(q.count == 2)
+        #expect(q.dequeue() == "a")
+        #expect(q.count == 1)
+        #expect(q.dequeue() == "b")
+        #expect(q.count == 0)
+    }
+
+    @Test func fifo_order() {
+        let q = LinkedListQueue<Int>()
+        for v in 1...10 { q.enqueue(item: v) }
+        #expect(q.count == 10)
+        for v in 1...10 {
+            #expect(q.dequeue() == v, "FIFO violated at \(v)")
+        }
+        #expect(q.count == 0)
+    }
+
+    @Test func dequeue_on_empty_returns_nil_and_count_stays_zero() {
+        let q = LinkedListQueue<Int>()
+        #expect(q.dequeue() == nil)
+        #expect(q.dequeue() == nil)
+        #expect(q.count == 0)
+    }
+
+    @Test func enqueue_after_full_drain() {
+        let q = LinkedListQueue<Int>()
+        q.enqueue(item: 1); q.enqueue(item: 2); q.enqueue(item: 3)
+        #expect(q.dequeue() == 1)
+        #expect(q.dequeue() == 2)
+        #expect(q.dequeue() == 3)
+        #expect(q.dequeue() == nil)
+        q.enqueue(item: 4); q.enqueue(item: 5)
+        #expect(q.count == 2)
+        #expect(q.dequeue() == 4)
+        #expect(q.dequeue() == 5)
+        #expect(q.count == 0)
+    }
+
+    @Test func repeated_empty_and_refill_cycles() {
+        let q = LinkedListQueue<Int>()
+        for round in 0..<20 {
+            q.enqueue(item: round)
+            #expect(q.count == 1)
+            #expect(q.dequeue() == round)
+            #expect(q.count == 0)
+            #expect(q.dequeue() == nil)
+        }
+    }
+
+    @Test func interleaved_enqueue_dequeue_keeps_order() {
+        let q = LinkedListQueue<String>()
+        var expected: [String] = []
+        var next = 0
+        for _ in 0..<50 {
+            for _ in 0..<3 {
+                let s = "item\(next)"; next += 1
+                q.enqueue(item: s); expected.append(s)
+            }
+            for _ in 0..<2 {
+                #expect(q.dequeue() == expected.removeFirst())
+            }
+            #expect(q.count == expected.count)
+        }
+        while !expected.isEmpty {
+            #expect(q.dequeue() == expected.removeFirst())
+        }
+        #expect(q.count == 0)
+        #expect(q.dequeue() == nil)
+    }
+
+    @Test func stress_against_array_model() {
+        let q = LinkedListQueue<Int>()
+        var model = [Int]()
+        var next = 0
+        for i in 0..<2000 {
+            if model.isEmpty || i % 3 != 0 {
+                q.enqueue(item: next); model.append(next); next += 1
+            } else {
+                #expect(q.dequeue() == model.removeFirst())
+            }
+            #expect(q.count == model.count, "count drifted at step \(i)")
+        }
+        while !model.isEmpty {
+            #expect(q.dequeue() == model.removeFirst())
+        }
+        #expect(q.dequeue() == nil)
+    }
+
+    @Test func supports_optional_items() {
+        // Item? is Optional<Int>?, so a dequeued nil item must differ from an empty queue.
+        let q = LinkedListQueue<Int?>()
+        q.enqueue(item: nil)
+        #expect(q.count == 1)
+        let result = q.dequeue()
+        #expect(result != nil)      // outer optional is non-nil: an item was dequeued
+        #expect(q.dequeue() == nil) // now truly empty
+    }
+
+    final class Tracker {}
+
+    @Test func nodes_are_released_after_dequeue() {
+        weak var weakItem: Tracker?
+        do {
+            let q = LinkedListQueue<Tracker>()
+            let t = Tracker()
+            weakItem = t
+            q.enqueue(item: t)
+            _ = q.dequeue()
+        }
+        #expect(weakItem == nil)
+    }
+}
